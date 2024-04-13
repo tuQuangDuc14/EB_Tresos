@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+
+<plugin>
+
+ <extension point="dreisoft.tresos.launcher2.plugin.module"
+             id="Can_HuLa_ModuleId"
+             name="Can_HuLa Module">
+
+    <module id="Can_HuLa"
+            label="Can"
+            mandatory="false"
+            allowMultiple="false"
+            description="Can BSW module"
+            copyright="Copyright 2024"
+            swVersionMajor="1"
+            swVersionMinor="0"
+            swVersionPatch="0"
+            swVersionSuffix="RTM"
+            specVersionMajor=""
+            specVersionMinor=""
+            specVersionPatch=""
+            specVersionSuffix=""
+            relVersionPrefix="AUTOSAR"
+            relVersionMajor="4"
+            relVersionMinor="4"
+            relVersionPatch="0"
+            relVersionSuffix=""
+            categoryType="Can"
+            categoryLayer="MCAL"
+            categoryCategory="ECU Firmware"
+            categoryComponent="ECUC">
+      <ecuType target="CortexM4" derivate="HuLa"/>
+
+    </module>
+  </extension>
+
+
+  <extension point="dreisoft.tresos.launcher2.plugin.configuration"
+             id="Can_HuLa_ConfigId"
+             name="Can_HuLa Configuration">
+    <configuration moduleId="Can_HuLa">
+      <schema>
+        <manager class="dreisoft.tresos.autosar2.resourcehandling.AutosarSchemaManager"/>
+        <!-- register the main xdm configuration schema for Can -->
+        <resource value="config/Can.xdm" type="xdm"/>
+      </schema>
+
+      <data>
+        <manager class="dreisoft.tresos.autosar2.resourcehandling.AutosarConfigManager"/>
+        <schemaNode path="ASPath:/Can_HuLa/Can"/>
+      </data>
+
+      <editor id="Can_HuLa_EditorId"
+              label="Default"
+              tooltip="Can BSW module">
+        <class class="dreisoft.tresos.launcher2.editor.GenericConfigEditor">
+          <parameter name="schema" value="ASPath:/Can_HuLa/Can"/>
+          <parameter name="title" value="Can"/>
+          <parameter name="noTabs" value="false"/>
+          <parameter name="noLinks" value="true"/>
+          <parameter name="groupLinks" value="false"/>
+          <parameter name="groupContainers" value="false"/>
+          <parameter name="groupTables" value="true"/>
+          <parameter name="optionalGeneralTab" value="true"/>
+        </class>
+      </editor>
+    </configuration>
+  </extension>
+
+
+
+ <extension point="dreisoft.tresos.launcher2.plugin.generator"
+             id="EPCGenerator"
+             name="EPC Generator">
+  <generator moduleId="Can_HuLa"
+               id="Can_HuLa"
+               class="dreisoft.tresos.autosar2.generator.EPCFileGenerator">
+
+  <parameter name="variantAware" value="true"/>
+  <parameter name="cfgFilePath" value="output"/>
+  <parameter name="generateAllModules" value="false"/>
+  <parameter name="generateIntoOneFile" value="false"/>
+  <parameter name="contentType" value="asc:4.4.0"/>
+  </generator>
+ </extension>
+
+
+ <extension point="dreisoft.tresos.generator.api.plugin.generator" id="Can_HuLa_NGGeneratorId">
+          <generator moduleId="Can_HuLa"
+                     class="dreisoft.tresos.generator.ng.api.NGGenerator"
+                     id="Can_HuLa_UniqueNGGeneratorId"
+                     modes="generate,generate_PC,generate_PB,verify"
+                     step="post"><!-- run after code-generation -->
+              <parameter name="buildfile" value="ant_generator.xml"/>
+           <parameter name="variantAware" value="true"/>
+          </generator>
+  </extension>
+
+
+  <extension point="dreisoft.tresos.launcher2.plugin.generator"
+              id="Can_HuLa_GeneratorId"
+              name="Can_HuLa Generator">
+    <generator moduleId="Can_HuLa"
+               class="dreisoft.tresos.launcher2.generator.TemplateBasedCodeGenerator">
+    <parameter name="variantAware" value="true"/>
+      <parameter name="templates" mode="generate,verify" value="generate,generate_PC,generate_PB"/>
+    </generator>
+  </extension>
+
+
+  <extension point="org.eclipse.help.toc">
+    <toc file="anchors.xml" primary="true"/>
+    <toc file="$nl$/Can/toc.xml" primary="false"/>
+  </extension>
+</plugin>
+
